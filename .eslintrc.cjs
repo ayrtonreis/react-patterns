@@ -45,5 +45,6 @@ module.exports = {
         'no-plusplus': 0,
         'max-classes-per-file': 0,
         'spaced-comment': 0,
+        'react/jsx-no-useless-fragment': 1,
     },
 }

@@ -29,6 +29,7 @@ module.exports = {
         'react/prop-types': 0,
         'react/require-default-props': 0,
         'react/function-component-definition': 0,
+        'react/no-unescaped-entities': 0,
         '@typescript-eslint/no-shadow': 0,
         'react/jsx-props-no-spreading': 0,
         'react/no-unknown-property': 1,

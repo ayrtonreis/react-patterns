@@ -12,8 +12,17 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.15.14",
+    "@mui/material": "^5.15.14",
+    "@mui/styled-engine": "npm:@mui/styled-engine-sc@latest",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "styled-components": "^6.1.8"
+  },
+  "resolutions": {
+    "@mui/styled-engine": "npm:@mui/styled-engine-sc@latest"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^1.2.25",
@@ -43,7 +52,7 @@
     "eslint-plugin-storybook": "^0.8.0",
     "prettier": "^3.2.1",
     "storybook": "^8.0.4",
-    "typescript": "^5.2.2",
+    "typescript": "5.3.3",
     "vite": "^5.0.8",
     "vitest": "^1.2.0"
   }

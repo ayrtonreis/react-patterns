@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { fn } from '@storybook/test'
+
 import { Button } from './Button'
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export

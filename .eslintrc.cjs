@@ -9,8 +9,8 @@ module.exports = {
         'airbnb/hooks',
         'plugin:@typescript-eslint/recommended',
         'plugin:react/recommended',
-        'plugin:prettier/recommended',
         'plugin:storybook/recommended',
+        'plugin:prettier/recommended',
     ],
     overrides: [
         {
@@ -32,6 +32,21 @@ module.exports = {
     },
     plugins: ['react', '@typescript-eslint', 'prettier'],
     rules: {
+        'import/order': [
+            'error',
+            {
+                groups: ['builtin', 'external', 'internal'],
+                pathGroups: [
+                    {
+                        pattern: 'react',
+                        group: 'external',
+                        position: 'before',
+                    },
+                ],
+                pathGroupsExcludedImportTypes: ['react'],
+                'newlines-between': 'always',
+            },
+        ],
         'react/react-in-jsx-scope': 0,
         'no-return-assign': 0,
         'react/prop-types': 0,
@@ -46,5 +61,6 @@ module.exports = {
         'max-classes-per-file': 0,
         'spaced-comment': 0,
         'react/jsx-no-useless-fragment': 1,
+        '@typescript-eslint/no-use-before-define': 1,
     },
 }

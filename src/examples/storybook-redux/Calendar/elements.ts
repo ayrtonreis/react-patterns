@@ -20,7 +20,7 @@ export const SlideView = styled.div<{ $isActive: boolean; $slideInFrom: string }
     background-color: ${(props) => props.color};
     transition: transform 1000ms cubic-bezier(0.4, 0, 0.2, 1);
     transform: ${(props) =>
-        props.$isActive ? 'translateX(0)' : `translateX(${props.$slideInFrom})`};
+        props.$isActive ? 'translateY(0)' : `translateY(${props.$slideInFrom})`};
 `
 
 export const GlobalCalendarWrapper = styled(Grid)`

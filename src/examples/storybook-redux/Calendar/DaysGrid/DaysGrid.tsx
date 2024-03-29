@@ -12,7 +12,7 @@ const DAYS = [
     [31, 1, 2, 3, 4, 5, 6],
 ]
 
-export function DaysGrid() {
+export function DaysGrid({ onClick }: { onClick: () => void }) {
     return (
         <Grid container>
             {DAYS.map((week) => (
@@ -27,6 +27,7 @@ export function DaysGrid() {
                                 position="relative"
                             >
                                 <IconButton
+                                    onClick={onClick}
                                     size="small"
                                     sx={{
                                         position: 'absolute',

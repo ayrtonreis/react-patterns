@@ -5,6 +5,7 @@ import { Close } from '@mui/icons-material'
 import { DaysGrid } from './DaysGrid/DaysGrid'
 import { HeaderMonth } from './HeaderMonth/index'
 import { ParentWrapper, SlideView } from './elements'
+import { SingleDayFull } from './SingleDayFull/index'
 
 export default function Calendar() {
     const [isDayOpened, setIsDayOpened] = useState(false)
@@ -57,7 +58,7 @@ export default function Calendar() {
                 </SlideView>
                 <SlideView $isActive={isDayOpened} $slideInFrom="100%" color="lightcoral">
                     <Grid container height="100%">
-                        <DaysGrid onClick={handleToggleView} />
+                        <SingleDayFull />
                     </Grid>
                 </SlideView>
             </Grid>

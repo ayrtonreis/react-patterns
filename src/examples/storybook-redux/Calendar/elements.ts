@@ -18,7 +18,7 @@ export const SlideView = styled.div<{ $isActive: boolean; $slideInFrom: string }
     justify-content: center;
     align-items: center;
     background-color: ${(props) => props.color};
-    transition: transform 1000ms cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 800ms cubic-bezier(0.4, 0, 0.2, 1);
     transform: ${(props) =>
         props.$isActive ? 'translateY(0)' : `translateY(${props.$slideInFrom})`};
 `

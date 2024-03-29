@@ -10,10 +10,6 @@ import { SingleDayFull } from './SingleDayFull/index'
 export default function Calendar() {
     const [isDayOpened, setIsDayOpened] = useState(false)
 
-    const handleToggleView = () => {
-        setIsDayOpened((prevIsDayOpened) => !prevIsDayOpened)
-    }
-
     return (
         <ParentWrapper>
             <Grid container height="55px" position="relative" zIndex={10}>
@@ -42,7 +38,7 @@ export default function Calendar() {
                         </Grid>
 
                         <Grid>
-                            <IconButton onClick={handleToggleView}>
+                            <IconButton onClick={() => setIsDayOpened(false)}>
                                 <Close />
                             </IconButton>
                         </Grid>
@@ -53,7 +49,7 @@ export default function Calendar() {
             <Grid container item style={{ position: 'relative', flex: 1, flexGrow: 1, zIndex: 8 }}>
                 <SlideView $isActive={!isDayOpened} $slideInFrom="-100%" color="lightblue">
                     <Grid container height="100%">
-                        <DaysGrid onClick={handleToggleView} />
+                        <DaysGrid onClick={() => setIsDayOpened(true)} />
                     </Grid>
                 </SlideView>
                 <SlideView $isActive={isDayOpened} $slideInFrom="100%" color="lightcoral">

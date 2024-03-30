@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Fade, Grid, IconButton } from '@mui/material'
+import { Fade, Grid, IconButton, Typography } from '@mui/material'
 import { Close } from '@mui/icons-material'
 
 import { DaysGrid } from './DaysGrid/DaysGrid'
@@ -11,13 +11,13 @@ export default function Calendar() {
     const [isDayOpened, setIsDayOpened] = useState(false)
 
     return (
-        <ParentWrapper>
+        <ParentWrapper $isSecondary={isDayOpened}>
             <Grid container height="55px" position="relative" zIndex={10}>
                 {/*<Fade in={activeView < 2} timeout={400}>*/}
                 <Grid
                     container
                     direction="column"
-                    sx={{ backgroundColor: '#9aafde' }}
+                    sx={{ backgroundColor: '#1976d2', color: 'rgba(255,255,255,0.92)' }}
                     position="absolute"
                     height="100%"
                 >
@@ -28,13 +28,16 @@ export default function Calendar() {
                     <Grid
                         container
                         // direction="column"
-                        sx={{ backgroundColor: 'rgb(243,200,154)' }}
+                        sx={{ backgroundColor: '#3fc1c0' }}
                         position="absolute"
                         height="100%"
                         alignContent="center"
                     >
-                        <Grid container item xs justifyContent="center" alignContent="center">
-                            <Grid>Details about a specific day</Grid>
+                        <Grid container item xs alignContent="center" marginLeft="26px">
+                            <Typography variant="h4" fontWeight="bold">
+                                April 2
+                            </Typography>
+                            <Typography variant="h4">, 2024</Typography>
                         </Grid>
 
                         <Grid>
@@ -47,12 +50,12 @@ export default function Calendar() {
             </Grid>
 
             <Grid container item style={{ position: 'relative', flex: 1, flexGrow: 1, zIndex: 8 }}>
-                <SlideView $isActive={!isDayOpened} $slideInFrom="-100%" color="lightblue">
+                <SlideView $isActive={!isDayOpened} $slideInFrom="-100%" color="#f7fafc">
                     <Grid container height="100%">
                         <DaysGrid onClick={() => setIsDayOpened(true)} />
                     </Grid>
                 </SlideView>
-                <SlideView $isActive={isDayOpened} $slideInFrom="100%" color="lightcoral">
+                <SlideView $isActive={isDayOpened} $slideInFrom="100%" color="#fafdfc">
                     <Grid container height="100%">
                         <SingleDayFull />
                     </Grid>

@@ -1,11 +1,12 @@
 import styled from 'styled-components'
 import { Grid } from '@mui/material'
 
-export const ParentWrapper = styled(Grid)`
+export const ParentWrapper = styled(Grid)<{ $isSecondary: boolean }>`
     width: 100%;
     height: 100%;
     overflow: hidden;
     border-radius: 10px;
+    border: solid 2px ${(props) => (props.$isSecondary ? '#34a0a4' : '#1976d2')};
     display: flex;
     flex-direction: column;
     //border: 1px solid #555;

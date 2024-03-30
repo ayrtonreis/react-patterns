@@ -2,6 +2,8 @@ import React, { useRef, useState } from 'react'
 import { Grid, IconButton, List, ListItem, TextField } from '@mui/material'
 import { AddCircleOutlined, RemoveCircle } from '@mui/icons-material'
 
+import { ColorSelectorPopover } from './ColorSelectorPopover/index'
+
 const ITEMS = [
     { id: '001', name: 'Learn a new coding language' },
     { id: '002', name: 'Write a short story' },
@@ -42,6 +44,18 @@ export default function SingleDayFull() {
         setItems((items) => items.filter((item) => item.id !== id))
     }
 
+    const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null)
+    const handleClickColor = (e: React.MouseEvent<HTMLButtonElement>) => {
+        setAnchorEl(e.currentTarget)
+    }
+
+    const handleCloseColor = () => {
+        setAnchorEl(null)
+    }
+
+    const open = Boolean(anchorEl)
+    const id = open ? 'simple-popover' : undefined
+
     return (
         <Grid container height="100%" direction="column" marginX="20px" paddingBottom="20px">
             <Grid container sx={{ flex: 1, width: '100%', overflowY: 'auto' }}>
@@ -57,7 +71,6 @@ export default function SingleDayFull() {
                                     style={{
                                         borderRadius: 20,
                                         border: 'solid 1px #0003',
-                                        padding: '0 10px 0 0 ',
                                     }}
                                 >
                                     <IconButton
@@ -68,6 +81,21 @@ export default function SingleDayFull() {
                                         <RemoveCircle />
                                     </IconButton>
                                     {item.name}
+                                    <IconButton
+                                        size="small"
+                                        sx={{ '&:not(:hover)': { opacity: 0.9 } }}
+                                        onClick={(e) => handleClickColor(e)}
+                                    >
+                                        <div
+                                            style={{
+                                                backgroundColor: '#fca18e',
+                                                width: 20,
+                                                height: 20,
+                                                borderRadius: 10,
+                                                margin: '2px',
+                                            }}
+                                        />
+                                    </IconButton>
                                 </div>
                             </Grid>
                         </ListItem>
@@ -85,6 +113,13 @@ export default function SingleDayFull() {
                         size="small"
                         fullWidth
                         margin="dense"
+                        sx={{
+                            '& .MuiOutlinedInput-root': {
+                                '&:hover fieldset, &.Mui-focused fieldset': {
+                                    borderColor: '#34a0a4',
+                                },
+                            },
+                        }}
                     />
                 </Grid>
                 <Grid marginRight="10px">
@@ -93,6 +128,13 @@ export default function SingleDayFull() {
                     </IconButton>
                 </Grid>
             </Grid>
+
+            <ColorSelectorPopover
+                id={id}
+                open={open}
+                anchorEl={anchorEl}
+                onClose={handleCloseColor}
+            />
         </Grid>
     )
 }

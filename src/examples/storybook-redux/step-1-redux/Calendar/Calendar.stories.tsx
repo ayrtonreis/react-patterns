@@ -1,18 +1,19 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryFn } from '@storybook/react'
 
 import { Calendar } from './index'
 import { GlobalCalendarWrapper } from './elements'
 
-const meta = {} satisfies Meta<typeof Calendar>
+const withLayout = (StoryComponent: StoryFn) => (
+    <GlobalCalendarWrapper>
+        <StoryComponent />
+    </GlobalCalendarWrapper>
+)
+
+const meta = {
+    component: Calendar,
+    decorators: [withLayout],
+} satisfies Meta<typeof Calendar>
 
 export default meta
 
-type Story = StoryObj<typeof meta>
-
-export const Primary: Story = {
-    render: () => (
-        <GlobalCalendarWrapper>
-            <Calendar />
-        </GlobalCalendarWrapper>
-    ),
-}
+export const Primary = () => <Calendar />

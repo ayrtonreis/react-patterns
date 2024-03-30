@@ -1,7 +1,11 @@
-import type { Meta, StoryFn } from '@storybook/react'
+import React from 'react'
+import type { Meta, StoryFn, StoryObj } from '@storybook/react'
+import { Provider } from 'react-redux'
+import { configureStore, createSlice } from '@reduxjs/toolkit'
 
 import { Calendar } from './index'
 import { GlobalCalendarWrapper } from './elements'
+import { CalendarState } from '../../../../store/slices/calendar/slice'
 
 const withLayout = (StoryComponent: StoryFn) => (
     <GlobalCalendarWrapper>
@@ -9,11 +13,43 @@ const withLayout = (StoryComponent: StoryFn) => (
     </GlobalCalendarWrapper>
 )
 
+/**
+ * @description {https://storybook.js.org/tutorials/intro-to-storybook/react/en/data/}
+ **/
+const MockedStore = ({
+    calendarState,
+    children,
+}: {
+    calendarState: CalendarState
+    children: React.ReactNode
+}) => (
+    <Provider
+        store={configureStore({
+            reducer: {
+                calendar: createSlice({
+                    name: 'calendar',
+                    initialState: calendarState,
+                    reducers: {},
+                }).reducer,
+            },
+        })}
+    >
+        {children}
+    </Provider>
+)
+
 const meta = {
     component: Calendar,
     decorators: [withLayout],
 } satisfies Meta<typeof Calendar>
-
 export default meta
 
-export const Primary = () => <Calendar />
+const MockedState: CalendarState = {
+    today: { day: 30, month: 2, year: 2024 },
+}
+
+type Story = StoryObj<typeof meta>
+
+export const Primary: Story = {
+    decorators: [(story) => <MockedStore calendarState={MockedState}>{story()}</MockedStore>],
+}

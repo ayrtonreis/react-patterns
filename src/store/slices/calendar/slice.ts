@@ -6,7 +6,7 @@ interface DateNoTZ {
     year: number
 }
 
-interface CalendarState {
+export interface CalendarState {
     today: DateNoTZ
 }
 

@@ -1,13 +1,17 @@
-import './App.css'
+import { Provider } from 'react-redux'
 
+import './App.css'
 import { Calendar } from './examples/storybook-redux/step-0-mocked/Calendar/index'
 import { GlobalCalendarWrapper } from './examples/storybook-redux/step-0-mocked/Calendar/elements'
+import { store } from './store/index'
 
 function App() {
     return (
-        <GlobalCalendarWrapper>
-            <Calendar />
-        </GlobalCalendarWrapper>
+        <Provider store={store}>
+            <GlobalCalendarWrapper>
+                <Calendar />
+            </GlobalCalendarWrapper>
+        </Provider>
     )
 }
 

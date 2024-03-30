@@ -22,6 +22,12 @@ module.exports = {
                 sourceType: 'script',
             },
         },
+        {
+            files: ['slice.{ts,js}'],
+            rules: {
+                'no-param-reassign': 'off',
+            },
+        },
     ],
     ignorePatterns: ['**/_trash/*'],
     parser: '@typescript-eslint/parser',
@@ -32,6 +38,18 @@ module.exports = {
     },
     plugins: ['react', '@typescript-eslint', 'prettier'],
     rules: {
+        'no-restricted-syntax': [
+            'error',
+            {
+                selector: 'CallExpression[callee.name=useSelector]',
+                message:
+                    'useSelector should not be used. Use its type-safe version: useAppSelector',
+            },
+            {
+                selector: 'CallExpression[callee.name=useDispatch]',
+                message: 'useDispatch should not be used. Use its type-safe version: useAppDispatch',
+            },
+        ],
         'import/order': [
             'error',
             {

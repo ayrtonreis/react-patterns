@@ -2,23 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { sortedIndexBy } from 'lodash'
 
 import { findSorted } from './utils'
-
-/**
- * @description Non-serializable entities (like Date objects) should not go into Redux
- *   Therefore, the stored timestamp will be its serializable representation (must be careful with TZ).
- */
-type Timestamp = string
-
-interface TaskEntry {
-    id: string
-    title: string
-    category: 0 | 1 | 2
-}
-
-interface DayEntry {
-    day: Timestamp
-    tasks: TaskEntry[]
-}
+import { DayEntry, TaskEntry, Timestamp } from './types'
 
 export interface CalendarState {
     today: Timestamp

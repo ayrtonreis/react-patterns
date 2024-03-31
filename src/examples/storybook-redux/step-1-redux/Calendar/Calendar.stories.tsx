@@ -45,7 +45,10 @@ const meta = {
 export default meta
 
 const MockedState: CalendarState = {
-    today: { day: 30, month: 2, year: 2024 },
+    today: '2024-04-02',
+    targetDay: '2024-04-02',
+    selectedDay: null,
+    orderedDayEntries: [],
 }
 
 type Story = StoryObj<typeof meta>

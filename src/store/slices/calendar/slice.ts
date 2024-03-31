@@ -1,24 +1,40 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-interface DateNoTZ {
-    day: number
-    month: number
-    year: number
+/**
+ * @description Non-serializable entities (like Date objects) should not go into Redux
+ *   Therefore, the stored timestamp will be its serializable representation (must be careful with TZ).
+ */
+type Timestamp = string
+
+interface TaskEntry {
+    category: 0 | 1 | 2
+    title: string
+}
+
+interface DayEntry {
+    day: Timestamp
+    tasks: TaskEntry[]
 }
 
 export interface CalendarState {
-    today: DateNoTZ
+    today: Timestamp
+    targetDay: Timestamp
+    selectedDay: null | Timestamp
+    orderedDayEntries: DayEntry[]
 }
 
 const initialState: CalendarState = {
-    today: { day: 30, month: 2, year: 2024 },
+    today: '2024-04-02',
+    targetDay: '2024-04-02',
+    selectedDay: null,
+    orderedDayEntries: [],
 }
 
 export const calendarSlice = createSlice({
     name: 'calendar',
     initialState,
     reducers: {
-        setToday(state, { payload: today }: PayloadAction<DateNoTZ>) {
+        setToday(state, { payload: today }: PayloadAction<Timestamp>) {
             state.today = today
         },
     },

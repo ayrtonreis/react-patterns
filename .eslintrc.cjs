@@ -26,6 +26,7 @@ module.exports = {
             files: ['slice.{ts,js}'],
             rules: {
                 'no-param-reassign': 'off',
+                'consistent-return': 'off',
             },
         },
     ],
@@ -47,7 +48,8 @@ module.exports = {
             },
             {
                 selector: 'CallExpression[callee.name=useDispatch]',
-                message: 'useDispatch should not be used. Use its type-safe version: useAppDispatch',
+                message:
+                    'useDispatch should not be used. Use its type-safe version: useAppDispatch',
             },
         ],
         'import/order': [

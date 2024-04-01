@@ -1,37 +1,28 @@
 import React, { useRef, useState } from 'react'
 import { Grid, IconButton, List, ListItem, TextField } from '@mui/material'
 import { AddCircleOutlined, RemoveCircle } from '@mui/icons-material'
+import { nanoid } from '@reduxjs/toolkit'
 
 import { ColorSelectorPopover } from './ColorSelectorPopover/index'
-
-const ITEMS = [
-    { id: '001', name: 'Learn a new coding language' },
-    { id: '002', name: 'Write a short story' },
-    { id: '003', name: 'Redecorate your living room' },
-    { id: '004', name: 'Start a blog about your passion' },
-    { id: '005', name: 'Take a photography class' },
-    { id: '006', name: 'Volunteer at a local charity' },
-    { id: '007', name: 'Plan a weekend getaway' },
-    { id: '008', name: 'Try a new cuisine' },
-    { id: '009', name: 'Organize a game night with friends' },
-    { id: '010', name: 'Start a garden or plant some herbs' },
-    { id: '011', name: 'Learn a new instrument' },
-    { id: '012', name: 'Attend a local art exhibition' },
-    { id: '013', name: 'Explore a new hiking trail' },
-    { id: '014', name: 'Try a new workout routine' },
-    { id: '015', name: 'Declutter and organize your workspace' },
-    { id: '016', name: 'Learn a new magic trick' },
-]
+import { useAppDispatch, useAppSelector } from '../../../../../store/slices/hooks'
+import { selectSelectedDayTasks } from '../../../../../store/slices/calendar/selectors'
+import {
+    addTaskEntryAction,
+    removeTaskEntryAction,
+} from '../../../../../store/slices/calendar/slice'
+import { TASK_COLORS } from '../constants'
 
 export default function SingleDayFull() {
-    const [items, setItems] = useState(ITEMS)
     const [input, setInput] = useState('')
     const lastListItemRef = useRef<HTMLLIElement | null>(null)
 
+    const items = useAppSelector(selectSelectedDayTasks)
+
+    const dispatch = useAppDispatch()
     const handleAddNew = () => {
         if (!input.trim()) return
 
-        setItems((items) => [...items, { id: Math.random().toString(), name: input }])
+        dispatch(addTaskEntryAction({ id: nanoid(), title: input }))
         setInput('')
         setTimeout(() => {
             if (lastListItemRef.current) {
@@ -41,11 +32,13 @@ export default function SingleDayFull() {
     }
 
     const handleDelete = (id: string) => {
-        setItems((items) => items.filter((item) => item.id !== id))
+        dispatch(removeTaskEntryAction({ id }))
     }
 
-    const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null)
-    const handleClickColor = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
+    const [clickedTaskId, setClickedTaskId] = useState<string | null>(null)
+    const handleClickColor = (e: React.MouseEvent<HTMLButtonElement>, id: string) => {
+        setClickedTaskId(id)
         setAnchorEl(e.currentTarget)
     }
 
@@ -54,7 +47,7 @@ export default function SingleDayFull() {
     }
 
     const open = Boolean(anchorEl)
-    const id = open ? 'simple-popover' : undefined
+    const id = open && clickedTaskId ? clickedTaskId : undefined
 
     return (
         <Grid container height="100%" direction="column" marginX="20px" paddingBottom="20px">
@@ -80,15 +73,15 @@ export default function SingleDayFull() {
                                     >
                                         <RemoveCircle />
                                     </IconButton>
-                                    {item.name}
+                                    {item.title}
                                     <IconButton
                                         size="small"
                                         sx={{ '&:not(:hover)': { opacity: 0.9 } }}
-                                        onClick={(e) => handleClickColor(e)}
+                                        onClick={(e) => handleClickColor(e, item.id)}
                                     >
                                         <div
                                             style={{
-                                                backgroundColor: '#fca18e',
+                                                backgroundColor: TASK_COLORS[item.category],
                                                 width: 20,
                                                 height: 20,
                                                 borderRadius: 10,

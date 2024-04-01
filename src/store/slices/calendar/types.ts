@@ -4,10 +4,13 @@
  */
 export type Timestamp = string
 
+export type TaskCategory = 0 | 1 | 2
+export const TASK_CATEGORY_VALUES: TaskCategory[] = [0, 1, 2]
+
 export interface TaskEntry {
     id: string
     title: string
-    category: 0 | 1 | 2
+    category: TaskCategory
 }
 
 export interface DayEntry {
@@ -15,7 +18,7 @@ export interface DayEntry {
     tasks: TaskEntry[]
 }
 
-export interface Day {
+export interface DayObj {
     day: number
     month: number
     year: number

@@ -4,10 +4,10 @@ import calendarReducer, { initialState, addTaskEntryAction, removeTaskEntryActio
 
 describe('addTaskEntry', () => {
     it('should insert a task into existing date', () => {
-        const action = addTaskEntryAction({ id: '001', day: '2024-01-01', title: 'task' })
-        const prevState = { ...initialState, orderedDayEntries: [] }
+        const action = addTaskEntryAction({ id: '001', title: 'task' })
+        const prevState = { ...initialState, selectedDay: '2024-01-01', orderedDayEntries: [] }
         const expectedState = {
-            ...initialState,
+            ...prevState,
             orderedDayEntries: [
                 {
                     day: '2024-01-01',
@@ -20,15 +20,16 @@ describe('addTaskEntry', () => {
     })
 
     it('should insert a task into an existing created date', () => {
-        const action = addTaskEntryAction({ id: '001', day: '2024-01-01', title: 'second' })
+        const action = addTaskEntryAction({ id: '001', title: 'second' })
         const prevState = {
             ...initialState,
+            selectedDay: '2024-01-01',
             orderedDayEntries: [
                 { day: '2024-01-01', tasks: [{ id: '000', title: 'first', category: 1 as const }] },
             ],
         }
         const expectedState = {
-            ...initialState,
+            ...prevState,
             orderedDayEntries: [
                 {
                     day: '2024-01-01',
@@ -44,15 +45,16 @@ describe('addTaskEntry', () => {
     })
 
     it('should remove a task', () => {
-        const action = removeTaskEntryAction({ id: '000', day: '2024-01-01' })
+        const action = removeTaskEntryAction({ id: '000' })
         const prevState = {
             ...initialState,
+            selectedDay: '2024-01-01',
             orderedDayEntries: [
                 { day: '2024-01-01', tasks: [{ id: '000', title: 'first', category: 1 as const }] },
             ],
         }
         const expectedState = {
-            ...initialState,
+            ...prevState,
             orderedDayEntries: [
                 {
                     day: '2024-01-01',

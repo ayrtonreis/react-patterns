@@ -6,9 +6,21 @@ import { DaysGrid } from './DaysGrid/DaysGrid'
 import { HeaderMonth } from './HeaderMonth/index'
 import { ParentWrapper, SlideView } from './elements'
 import { SingleDayFull } from './SingleDayFull/index'
+import { useAppDispatch, useAppSelector } from '../../../../store/slices/hooks'
+import { setSelectedDayAction } from '../../../../store/slices/calendar/slice'
+import { getLocalizedMonthDay, getYear } from './utils'
+import { selectSelectedDay } from '../../../../store/slices/calendar/selectors'
 
 export default function Calendar() {
     const [isDayOpened, setIsDayOpened] = useState(false)
+
+    const selectedDay = useAppSelector(selectSelectedDay)
+
+    const dispatch = useAppDispatch()
+    const handleCloseFullDay = () => {
+        dispatch(setSelectedDayAction(null))
+        setIsDayOpened(false)
+    }
 
     return (
         <ParentWrapper $isSecondary={isDayOpened}>
@@ -35,13 +47,13 @@ export default function Calendar() {
                     >
                         <Grid container item xs alignContent="center" marginLeft="26px">
                             <Typography variant="h4" fontWeight="bold">
-                                April 2
+                                {selectedDay ? getLocalizedMonthDay(selectedDay) : null}
                             </Typography>
-                            <Typography variant="h4">, 2024</Typography>
+                            <Typography variant="h4">{`, ${selectedDay ? getYear(selectedDay) : null}`}</Typography>
                         </Grid>
 
                         <Grid>
-                            <IconButton onClick={() => setIsDayOpened(false)}>
+                            <IconButton onClick={handleCloseFullDay}>
                                 <Close />
                             </IconButton>
                         </Grid>

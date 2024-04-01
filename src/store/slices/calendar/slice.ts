@@ -22,8 +22,8 @@ export const calendarSlice = createSlice({
     name: 'calendar',
     initialState,
     reducers: {
-        setToday(state, { payload: today }: PayloadAction<Timestamp>) {
-            state.today = today
+        setSelectedDay(state, { payload: date }: PayloadAction<Timestamp | null>) {
+            state.selectedDay = date
         },
         goToNextMonth(state) {
             const date = new Date(state.targetDay)
@@ -38,11 +38,12 @@ export const calendarSlice = createSlice({
         addTaskEntry(
             state,
             {
-                payload: { id, day, title, category },
-            }: PayloadAction<
-                Omit<TaskEntry, 'category'> & { day: Timestamp; category?: TaskEntry['category'] }
-            >
+                payload: { id, title, category },
+            }: PayloadAction<Omit<TaskEntry, 'category'> & { category?: TaskEntry['category'] }>
         ) {
+            const day = state.selectedDay
+            if (!day) return state
+
             const dayEntry = (() => {
                 const items: Pick<DayEntry, 'day'>[] = state.orderedDayEntries
 
@@ -64,13 +65,30 @@ export const calendarSlice = createSlice({
                 category: category ?? 0,
             })
         },
-        removeTaskEntry(
-            state,
-            { payload: { day, id } }: PayloadAction<{ day: Timestamp; id: string }>
-        ) {
+        removeTaskEntry(state, { payload: { id } }: PayloadAction<{ id: string }>) {
+            const day = state.selectedDay
+            if (!day) return state
+
             const dayEntry = findSorted(state.orderedDayEntries, day, (v) => v.day)
             if (dayEntry) {
                 dayEntry.tasks = dayEntry.tasks.filter((task) => task.id !== id)
+            }
+        },
+        setTaskCategory(
+            state,
+            {
+                payload: { id, category },
+            }: PayloadAction<{ id: string; category: TaskEntry['category'] }>
+        ) {
+            const day = state.selectedDay
+            if (!day) return state
+
+            const dayEntry = findSorted(state.orderedDayEntries, day, (v) => v.day)
+            if (!dayEntry) return state
+
+            const task = dayEntry.tasks.find((t) => t.id === id)
+            if (task) {
+                task.category = category
             }
         },
     },
@@ -79,9 +97,10 @@ export const calendarSlice = createSlice({
 export default calendarSlice.reducer
 
 export const {
-    setToday: setTodayAction,
+    setSelectedDay: setSelectedDayAction,
     goToNextMonth: goToNextMonthAction,
     goToPreviousMonth: goToPreviousMonthAction,
     addTaskEntry: addTaskEntryAction,
     removeTaskEntry: removeTaskEntryAction,
+    setTaskCategory: setTaskCategoryAction,
 } = calendarSlice.actions

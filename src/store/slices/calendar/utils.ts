@@ -1,4 +1,4 @@
-import { Day } from './types'
+import { DayObj, TaskCategory, TASK_CATEGORY_VALUES, TaskEntry } from './types'
 
 export function findSorted<T, V>(items: T[], target: V, getter: (item: T) => V): T | undefined {
     let left = 0
@@ -20,7 +20,7 @@ export function findSorted<T, V>(items: T[], target: V, getter: (item: T) => V):
     return undefined
 }
 
-export function getDaysOfMonth(dateStr: string): Day[][] {
+export function getDaysOfMonth(dateStr: string): DayObj[][] {
     const targetDate = new Date(dateStr)
     const year = targetDate.getFullYear()
     const month = targetDate.getMonth()
@@ -37,11 +37,11 @@ export function getDaysOfMonth(dateStr: string): Day[][] {
     const endDay = new Date(lastDayOfMonth)
     endDay.setDate(endDay.getDate() + (6 - endDay.getDay()))
 
-    const weeks: Day[][] = []
+    const weeks: DayObj[][] = []
     const currentDay = new Date(startDay)
 
     while (currentDay <= endDay) {
-        const week: Day[] = []
+        const week: DayObj[] = []
         for (let i = 0; i < 7; i++) {
             week.push({
                 day: currentDay.getDate(),
@@ -54,4 +54,20 @@ export function getDaysOfMonth(dateStr: string): Day[][] {
     }
 
     return weeks
+}
+
+export function aggregateItemsByCategory(tasks: TaskEntry[]): Map<TaskCategory, number> {
+    const map = tasks.reduce(
+        (acc, task) => {
+            const prev = acc.get(task.category)
+            if (prev !== undefined) {
+                acc.set(task.category, prev + 1)
+            }
+
+            return acc
+        },
+        new Map<TaskCategory, number>(TASK_CATEGORY_VALUES.map((v) => [v, 0]))
+    )
+
+    return map
 }

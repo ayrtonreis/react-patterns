@@ -3,6 +3,9 @@ import { IconButton, Popover, PopoverProps } from '@mui/material'
 
 import { PopoverContent } from './elements'
 import { TASK_COLORS } from '../../constants'
+import { useAppDispatch } from '../../../../../../store/slices/hooks'
+import { setTaskCategoryAction } from '../../../../../../store/slices/calendar/slice'
+import { TaskCategory } from '../../../../../../store/slices/calendar/types'
 
 function ColorSelectorPopover({
     id,
@@ -10,6 +13,16 @@ function ColorSelectorPopover({
     anchorEl,
     onClose,
 }: Pick<PopoverProps, 'id' | 'open' | 'anchorEl' | 'onClose'>) {
+    const dispatch = useAppDispatch()
+    const handleClick = (category: number) => {
+        if (id) {
+            dispatch(setTaskCategoryAction({ id, category: category as TaskCategory }))
+        }
+        if (onClose) {
+            onClose({}, 'backdropClick')
+        }
+    }
+
     return (
         <Popover
             id={id}
@@ -26,8 +39,12 @@ function ColorSelectorPopover({
             }}
         >
             <PopoverContent>
-                {TASK_COLORS.map((color) => (
-                    <IconButton key={color} style={{ padding: 4 }}>
+                {TASK_COLORS.map((color, index) => (
+                    <IconButton
+                        key={color}
+                        style={{ padding: 4 }}
+                        onClick={() => handleClick(index)}
+                    >
                         <div
                             style={{
                                 backgroundColor: color,
@@ -35,7 +52,7 @@ function ColorSelectorPopover({
                                 width: 20,
                                 height: 20,
                                 borderRadius: 20,
-                                border: 'solid 2px #888',
+                                border: 'solid 2px #ddd',
                             }}
                         />
                     </IconButton>

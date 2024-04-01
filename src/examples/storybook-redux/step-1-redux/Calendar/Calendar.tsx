@@ -10,11 +10,12 @@ import { useAppDispatch, useAppSelector } from '../../../../store/slices/hooks'
 import { setSelectedDayAction } from '../../../../store/slices/calendar/slice'
 import { getLocalizedMonthDay, getYear } from './utils'
 import { selectSelectedDay } from '../../../../store/slices/calendar/selectors'
+import { useDeferredValue } from '../../../../hooks/useDeferredValue'
 
 export default function Calendar() {
     const [isDayOpened, setIsDayOpened] = useState(false)
 
-    const selectedDay = useAppSelector(selectSelectedDay)
+    const selectedDay = useDeferredValue(useAppSelector(selectSelectedDay))
 
     const dispatch = useAppDispatch()
     const handleCloseFullDay = () => {

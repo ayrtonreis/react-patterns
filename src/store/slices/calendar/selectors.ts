@@ -35,7 +35,7 @@ export const selectSelectedDayTasks = createSelector(
     selectCalendar,
     ({ orderedDayEntries, selectedDay }) => {
         const tasks = findSorted(orderedDayEntries, selectedDay, (item) => item.day)?.tasks
-        return tasks ?? []
+        return tasks || []
     }
 )
 

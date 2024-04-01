@@ -3,14 +3,14 @@ import { Grid, IconButton, List, ListItem, TextField } from '@mui/material'
 import { AddCircleOutlined, RemoveCircle } from '@mui/icons-material'
 import { nanoid } from '@reduxjs/toolkit'
 
-import { ColorSelectorPopover } from './ColorSelectorPopover/index'
+import { TASK_COLORS } from '../constants'
 import { useAppDispatch, useAppSelector } from '../../../../../store/slices/hooks'
 import { selectSelectedDayTasks } from '../../../../../store/slices/calendar/selectors'
 import {
     addTaskEntryAction,
     removeTaskEntryAction,
 } from '../../../../../store/slices/calendar/slice'
-import { TASK_COLORS } from '../constants'
+import { ColorSelectorPopover } from './ColorSelectorPopover/index'
 
 export default function SingleDayFull() {
     const [input, setInput] = useState('')

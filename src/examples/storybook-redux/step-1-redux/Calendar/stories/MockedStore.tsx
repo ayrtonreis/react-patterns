@@ -1,36 +1,57 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Provider } from 'react-redux'
-import { configureStore, createSlice } from '@reduxjs/toolkit'
+import { configureStore, createAction, createSlice, Middleware } from '@reduxjs/toolkit'
 
 import { calendarSlice, CalendarState } from '../../../../../store/slices/calendar/slice'
+import { mapStateToSbArgs, useDeepMemo } from './utils'
 
+const middleware: (updateArgs: (obj: object) => void) => Middleware =
+    (updateArgs) => (store) => (next) => (action) => {
+        const result = next(action)
+
+        const state = store.getState().calendar
+        updateArgs(mapStateToSbArgs(state))
+
+        return result
+    }
+
+const applySbState = createAction<CalendarState>('applySbState')
 /**
  * @description {https://storybook.js.org/tutorials/intro-to-storybook/react/en/data/}
  **/
 export const MockedStore = ({
     calendarState,
+    updateArgs,
     children,
 }: {
     calendarState: CalendarState
     children: React.ReactNode
-}) => (
-    <Provider
-        store={configureStore({
+    updateArgs: (obj: object) => void
+}) => {
+    // Attention: using a state instead of a ref due to lazy initialization
+    const [store] = useState(() =>
+        configureStore({
             reducer: {
                 calendar: createSlice({
                     name: 'calendar',
                     initialState: calendarState,
                     reducers: calendarSlice.caseReducers,
+                    extraReducers: (builder) => {
+                        builder.addCase(applySbState, (state, { payload }) => ({
+                            ...state,
+                            ...payload,
+                        }))
+                    },
                 }).reducer,
             },
-        })}
+            middleware: (getDefaultMiddleware) =>
+                getDefaultMiddleware().concat(middleware(updateArgs)),
+        })
+    )
 
-        // store={configureStore({
-        // // @ts-expect-error - Object literal may only specify known properties
-        //     reducer: { calendar: calendarReducer },
-        //     preloadedState: calendarState,
-        // })}
-    >
-        {children}
-    </Provider>
-)
+    useDeepMemo(() => {
+        store.dispatch(applySbState(calendarState))
+    }, calendarState)
+
+    return <Provider store={store}>{children}</Provider>
+}

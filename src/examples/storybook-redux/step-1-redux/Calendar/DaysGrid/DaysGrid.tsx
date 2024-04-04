@@ -10,14 +10,13 @@ import {
 import { setSelectedDayAction } from '../../../../../store/slices/calendar/slice'
 import { DayObj, TASK_CATEGORY_VALUES } from '../../../../../store/slices/calendar/types'
 
-export function DaysGrid({ onClick }: { onClick: () => void }) {
+export function DaysGrid() {
     const targetMonth = useAppSelector(selectTargetMonthValue)
     const days = useAppSelector(selectTargetMonthItems)
 
     const dispatch = useAppDispatch()
     const handleClickDay = ({ year, month, day }: DayObj) => {
         dispatch(setSelectedDayAction(new Date(year, month, day).toISOString()))
-        onClick()
     }
 
     return (

@@ -1,28 +1,57 @@
 import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
+import { useArgs } from '@storybook/client-api'
 
 import { Calendar } from '../index'
-import { CalendarState } from '../../../../../store/slices/calendar/slice'
 import { withLayout } from './WithLayout'
 import { MockedStore } from './MockedStore'
+import { mapSbArgsToState } from './utils'
+import { CalendarPropsAndCustomArgs } from './types'
 
-const meta = {
+const meta: Meta<CalendarPropsAndCustomArgs> = {
     title: 'storybook-redux/Calendar',
     component: Calendar,
-    decorators: [withLayout],
-} satisfies Meta<typeof Calendar>
-export default meta
+    decorators: [
+        withLayout,
+        (story, ctx) => {
+            const [, updateArgs] = useArgs()
 
-const MockedState: CalendarState = {
-    today: '2024-04-02',
-    targetDay: '2024-04-02',
-    selectedDay: null,
-    orderedDayEntries: [],
+            return (
+                <MockedStore
+                    {...ctx}
+                    calendarState={mapSbArgsToState(ctx.args)}
+                    updateArgs={updateArgs}
+                >
+                    {story()}
+                </MockedStore>
+            )
+        },
+    ],
+    argTypes: {
+        today: {
+            control: 'date',
+        },
+        targetDay: { control: 'date' },
+        showSelectedDay: { name: 'showSelectedDay?', control: 'boolean' },
+        selectedDay: {
+            control: 'date',
+            options: [null],
+            if: { arg: 'showSelectedDay', truthy: true },
+        },
+        orderedDayEntries: { control: 'object' },
+    },
 }
-
 type Story = StoryObj<typeof meta>
 
 export const Primary: Story = {
-    decorators: [(story) => <MockedStore calendarState={MockedState}>{story()}</MockedStore>],
-    args: {},
+    decorators: [],
+    args: {
+        today: new Date().toISOString(),
+        targetDay: new Date().toISOString(),
+        showSelectedDay: false,
+        selectedDay: new Date().toISOString(),
+        orderedDayEntries: [],
+    },
 }
+
+export default meta

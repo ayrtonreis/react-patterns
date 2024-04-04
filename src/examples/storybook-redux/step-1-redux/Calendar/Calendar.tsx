@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Fade, Grid, IconButton, Typography } from '@mui/material'
 import { Close } from '@mui/icons-material'
+import { isNil } from 'lodash'
 
 import { DaysGrid } from './DaysGrid/DaysGrid'
 import { HeaderMonth } from './HeaderMonth/index'
@@ -13,14 +14,13 @@ import { selectSelectedDay } from '../../../../store/slices/calendar/selectors'
 import { useDeferredValue } from '../../../../hooks/useDeferredValue'
 
 export default function Calendar() {
-    const [isDayOpened, setIsDayOpened] = useState(false)
-
-    const selectedDay = useDeferredValue(useAppSelector(selectSelectedDay))
+    const rawSelectedDay = useAppSelector(selectSelectedDay)
+    const deferredSelectedDay = useDeferredValue(rawSelectedDay)
+    const isDayOpened = !isNil(rawSelectedDay)
 
     const dispatch = useAppDispatch()
     const handleCloseFullDay = () => {
         dispatch(setSelectedDayAction(null))
-        setIsDayOpened(false)
     }
 
     return (
@@ -48,9 +48,11 @@ export default function Calendar() {
                     >
                         <Grid container item xs alignContent="center" marginLeft="26px">
                             <Typography variant="h4" fontWeight="bold">
-                                {selectedDay ? getLocalizedMonthDay(selectedDay) : null}
+                                {deferredSelectedDay
+                                    ? getLocalizedMonthDay(deferredSelectedDay)
+                                    : null}
                             </Typography>
-                            <Typography variant="h4">{`, ${selectedDay ? getYear(selectedDay) : null}`}</Typography>
+                            <Typography variant="h4">{`, ${deferredSelectedDay ? getYear(deferredSelectedDay) : null}`}</Typography>
                         </Grid>
 
                         <Grid>
@@ -65,7 +67,7 @@ export default function Calendar() {
             <Grid container item style={{ position: 'relative', flex: 1, flexGrow: 1, zIndex: 8 }}>
                 <SlideView $isActive={!isDayOpened} $slideInFrom="-100%" color="#f7fafc">
                     <Grid container height="100%">
-                        <DaysGrid onClick={() => setIsDayOpened(true)} />
+                        <DaysGrid />
                     </Grid>
                 </SlideView>
                 <SlideView $isActive={isDayOpened} $slideInFrom="100%" color="#fafdfc">

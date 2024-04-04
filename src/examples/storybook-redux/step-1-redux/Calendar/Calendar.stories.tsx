@@ -5,7 +5,7 @@ import { configureStore, createSlice } from '@reduxjs/toolkit'
 
 import { Calendar } from './index'
 import { GlobalCalendarWrapper } from './elements'
-import { CalendarState } from '../../../../store/slices/calendar/slice'
+import { calendarSlice, CalendarState } from '../../../../store/slices/calendar/slice'
 
 const withLayout = (StoryComponent: StoryFn) => (
     <GlobalCalendarWrapper>
@@ -29,10 +29,16 @@ const MockedStore = ({
                 calendar: createSlice({
                     name: 'calendar',
                     initialState: calendarState,
-                    reducers: {},
+                    reducers: calendarSlice.caseReducers,
                 }).reducer,
             },
         })}
+
+        // store={configureStore({
+        // // @ts-expect-error - Object literal may only specify known properties
+        //     reducer: { calendar: calendarReducer },
+        //     preloadedState: calendarState,
+        // })}
     >
         {children}
     </Provider>

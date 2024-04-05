@@ -1,22 +1,25 @@
 import React from 'react'
-import { Grid, IconButton } from '@mui/material'
+import { Grid } from '@mui/material'
 
-import { DayCellWrapper, TaskCountItem, WeekWrapper } from './elements'
+import { DayCellWrapper, StyledIconButton, TaskCountItem, WeekWrapper } from './elements'
 import { useAppDispatch, useAppSelector } from '../../../../../store/slices/hooks'
 import {
     selectTargetMonthItems,
     selectTargetMonthValue,
+    selectToday,
 } from '../../../../../store/slices/calendar/selectors'
 import { setSelectedDayAction } from '../../../../../store/slices/calendar/slice'
 import { DayObj, TASK_CATEGORY_VALUES } from '../../../../../store/slices/calendar/types'
+import { getStoreTimestamp, isSameDay } from '../utils'
 
 export function DaysGrid() {
     const targetMonth = useAppSelector(selectTargetMonthValue)
+    const today = useAppSelector(selectToday)
     const days = useAppSelector(selectTargetMonthItems)
 
     const dispatch = useAppDispatch()
     const handleClickDay = ({ year, month, day }: DayObj) => {
-        dispatch(setSelectedDayAction(new Date(year, month, day).toISOString()))
+        dispatch(setSelectedDayAction(getStoreTimestamp({ year, month, day })))
     }
 
     return (
@@ -32,26 +35,14 @@ export function DaysGrid() {
                                 flexGrow={1}
                                 position="relative"
                             >
-                                <IconButton
+                                <StyledIconButton
                                     onClick={() => handleClickDay({ year, month, day })}
                                     size="small"
-                                    sx={{
-                                        color: '#1976d2',
-                                        opacity: month === targetMonth ? 1 : 0.5,
-                                        position: 'absolute',
-                                        width: 30,
-                                        height: 30,
-                                        backgroundColor: 'transparent',
-                                        '&:hover': {
-                                            backgroundColor: '#2196f3',
-                                            color: '#fff',
-                                        },
-                                        transition:
-                                            'background-color 200ms ease-in-out, color 100ms ease-in-out',
-                                    }}
+                                    $fade={month !== targetMonth}
+                                    $hasBorder={isSameDay(today, { year, month, day })}
                                 >
                                     {day}
-                                </IconButton>
+                                </StyledIconButton>
                             </Grid>
 
                             <Grid container justifyContent="end" padding="4px 0">

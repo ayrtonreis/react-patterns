@@ -1,7 +1,7 @@
 // noinspection CssUnresolvedCustomProperty
 
 import styled, { css } from 'styled-components'
-import { Grid } from '@mui/material'
+import { Grid, IconButton } from '@mui/material'
 
 import { TASK_COLORS } from '../constants'
 
@@ -33,4 +33,23 @@ export const TaskCountItem = styled.div<{ $colorCode: number }>`
     margin-right: 4px;
     border-radius: 16px;
     font-size: 12px;
+`
+
+export const StyledIconButton = styled(IconButton)<{ $fade?: boolean; $hasBorder?: boolean }>`
+    color: #1976d2;
+    opacity: ${({ $fade }) => ($fade ? 0.5 : 1)};
+    border: ${({ $hasBorder }) => ($hasBorder ? 'solid 1px #1976d2' : 'none')};
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    margin: 4px;
+    background-color: transparent;
+    transition:
+        background-color 200ms ease-in-out,
+        color 100ms ease-in-out;
+
+    &:hover {
+        background-color: #2196f3;
+        color: #fff;
+    }
 `

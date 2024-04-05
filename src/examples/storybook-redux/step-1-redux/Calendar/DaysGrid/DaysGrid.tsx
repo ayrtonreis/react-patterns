@@ -1,7 +1,6 @@
 import React from 'react'
 import { Grid } from '@mui/material'
 
-import { DayCellWrapper, StyledIconButton, TaskCountItem, WeekWrapper } from './elements'
 import { useAppDispatch, useAppSelector } from '../../../../../store/slices/hooks'
 import {
     selectTargetMonthItems,
@@ -10,6 +9,9 @@ import {
 } from '../../../../../store/slices/calendar/selectors'
 import { setSelectedDayAction } from '../../../../../store/slices/calendar/slice'
 import { DayObj, TASK_CATEGORY_VALUES } from '../../../../../store/slices/calendar/types'
+import { useGetWeatherQuery } from '../../../../../store/api/weather'
+import { WeatherEmoji } from './WeatherEmoji/index'
+import { DayCellWrapper, StyledIconButton, TaskCountItem, WeekWrapper } from './elements'
 import { getStoreTimestamp, isSameDay } from '../utils'
 
 export function DaysGrid() {
@@ -22,12 +24,21 @@ export function DaysGrid() {
         dispatch(setSelectedDayAction(getStoreTimestamp({ year, month, day })))
     }
 
+    const { data: weatherByDate } = useGetWeatherQuery()
+
     return (
         <Grid container>
             {days.map((week) => (
                 <WeekWrapper container item key={JSON.stringify(week[0])}>
                     {week.map(({ day, month, year, taskCounterByCategory }) => (
                         <DayCellWrapper item container direction="column" xs key={day}>
+                            <WeatherEmoji
+                                mapping={weatherByDate}
+                                year={year}
+                                month={month}
+                                day={day}
+                            />
+
                             <Grid
                                 container
                                 justifyContent="flex-end"

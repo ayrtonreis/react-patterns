@@ -4,6 +4,7 @@ import { configureStore, createAction, createSlice, Middleware } from '@reduxjs/
 
 import { calendarSlice, CalendarState } from '../../../../../store/slices/calendar/slice'
 import { mapStateToSbArgs, useDeepMemo } from './utils'
+import { weatherApi } from '../../../../../store/api/weather'
 
 const middleware: (updateArgs: (obj: object) => void) => Middleware =
     (updateArgs) => (store) => (next) => (action) => {
@@ -43,9 +44,12 @@ export const MockedStore = ({
                         }))
                     },
                 }).reducer,
+                [weatherApi.reducerPath]: weatherApi.reducer,
             },
             middleware: (getDefaultMiddleware) =>
-                getDefaultMiddleware().concat(middleware(updateArgs)),
+                getDefaultMiddleware() //
+                    .concat(weatherApi.middleware)
+                    .concat(middleware(updateArgs)),
         })
     )
 

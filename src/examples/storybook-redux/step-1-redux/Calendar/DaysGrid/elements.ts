@@ -53,3 +53,11 @@ export const StyledIconButton = styled(IconButton)<{ $fade?: boolean; $hasBorder
         color: #fff;
     }
 `
+
+export const WeatherIconWrapper = styled.div`
+    z-index: 10;
+    cursor: default;
+    font-size: 16px;
+    position: absolute;
+    margin: 4px;
+`

@@ -1,14 +1,22 @@
 import { useMemo, useRef } from 'react'
 import { isEqual, isNil } from 'lodash'
 
-import { CalendarState } from '../../../../../store/slices/calendar/slice'
+import { CalendarState, initialState } from '../../../../../store/slices/calendar/slice'
 import { CalendarPropsAndCustomArgs } from './types'
+import {
+    mapCoordinatesToLocationId,
+    mapLocationIdToCoordinates,
+} from '../../../../../store/slices/calendar/utils'
 
 export function serializeDate(date: string | number | Date) {
     return new Date(date).toISOString()
 }
 
-export function mapSbArgsToState(args: CalendarPropsAndCustomArgs): CalendarState {
+export function mapSbArgsToState({
+    locationId,
+    ...args
+}: CalendarPropsAndCustomArgs): CalendarState {
+    const location = mapLocationIdToCoordinates(locationId)
     return {
         ...args,
         today: serializeDate(args.today),
@@ -20,15 +28,17 @@ export function mapSbArgsToState(args: CalendarPropsAndCustomArgs): CalendarStat
             ...item,
             day: serializeDate(day),
         })),
+        location: location || initialState.location,
     }
 }
 
-export function mapStateToSbArgs(state: CalendarState) {
+export function mapStateToSbArgs(state: CalendarState): Partial<CalendarPropsAndCustomArgs> {
     return {
         ...state,
         // this remapping is necessary due to the way that the way SB controls handle null dates
-        selectedDay: isNil(state.selectedDay) ? undefined : state.selectedDay,
+        selectedDay: isNil(state.selectedDay) ? null : state.selectedDay,
         showSelectedDay: !isNil(state.selectedDay),
+        locationId: mapCoordinatesToLocationId(state.location),
     }
 }
 

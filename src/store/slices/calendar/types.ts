@@ -23,3 +23,11 @@ export interface DayObj {
     month: number
     year: number
 }
+
+export interface Coordinates {
+    latitude: number
+    longitude: number
+}
+
+export const LOCATION_OPTIONS = ['Porsgrunn', 'Rio', 'New York'] as const
+export type LocationOptions = (typeof LOCATION_OPTIONS)[number]

@@ -1,5 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
+import { Coordinates } from '../slices/calendar/types'
+
 interface WeatherApiResponse {
     daily: {
         time: string[]
@@ -53,12 +55,11 @@ export const weatherApi = createApi({
     reducerPath: 'weatherApi',
     baseQuery: fetchBaseQuery({ baseUrl: 'https://api.open-meteo.com/v1/' }),
     endpoints: (builder) => ({
-        getWeather: builder.query<WeatherByDate, void>({
-            query: () => ({
+        getWeather: builder.query<WeatherByDate, Coordinates>({
+            query: (coordinates) => ({
                 url: 'forecast',
                 params: {
-                    latitude: 59.1386,
-                    longitude: 9.6555,
+                    ...coordinates,
                     daily: 'weather_code',
                     timezone: 'Europe/Berlin',
                     forecast_days: 16,

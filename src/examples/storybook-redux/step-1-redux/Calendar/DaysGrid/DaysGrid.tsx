@@ -3,6 +3,7 @@ import { Grid } from '@mui/material'
 
 import { useAppDispatch, useAppSelector } from '../../../../../store/slices/hooks'
 import {
+    selectLocation,
     selectTargetMonthItems,
     selectTargetMonthValue,
     selectToday,
@@ -15,6 +16,7 @@ import { DayCellWrapper, StyledIconButton, TaskCountItem, WeekWrapper } from './
 import { getStoreTimestamp, isSameDay } from '../utils'
 
 export function DaysGrid() {
+    const location = useAppSelector(selectLocation)
     const targetMonth = useAppSelector(selectTargetMonthValue)
     const today = useAppSelector(selectToday)
     const days = useAppSelector(selectTargetMonthItems)
@@ -24,7 +26,7 @@ export function DaysGrid() {
         dispatch(setSelectedDayAction(getStoreTimestamp({ year, month, day })))
     }
 
-    const { data: weatherByDate } = useGetWeatherQuery()
+    const { data: weatherByDate } = useGetWeatherQuery(location, { pollingInterval: 0 })
 
     return (
         <Grid container>

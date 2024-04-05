@@ -1,4 +1,11 @@
-import { DayObj, TaskCategory, TASK_CATEGORY_VALUES, TaskEntry } from './types'
+import {
+    Coordinates,
+    DayObj,
+    LocationOptions,
+    TASK_CATEGORY_VALUES,
+    TaskCategory,
+    TaskEntry,
+} from './types'
 
 export function findSorted<T, V>(items: T[], target: V, getter: (item: T) => V): T | undefined {
     let left = 0
@@ -70,4 +77,21 @@ export function aggregateItemsByCategory(tasks: TaskEntry[]): Map<TaskCategory, 
     )
 
     return map
+}
+
+const CoordinatesById: Record<LocationOptions, Coordinates> = {
+    Porsgrunn: { latitude: 59.1386, longitude: 9.6555 },
+    Rio: { latitude: 22.9068, longitude: 43.1729 },
+    'New York': { latitude: 40.7128, longitude: 74.006 },
+}
+
+export function mapLocationIdToCoordinates(id: string): Coordinates | undefined {
+    return CoordinatesById?.[id as LocationOptions]
+}
+
+export function mapCoordinatesToLocationId(location: Coordinates | undefined): string | undefined {
+    const { latitude, longitude } = location || {}
+    return Object.entries(CoordinatesById).find(
+        ([, item]) => item.latitude === latitude && item.longitude === longitude
+    )?.[0]
 }

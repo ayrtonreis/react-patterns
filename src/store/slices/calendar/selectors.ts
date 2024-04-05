@@ -5,12 +5,14 @@ import { aggregateItemsByCategory, findSorted, getDaysOfMonth } from './utils'
 
 const selectCalendar = (state: RootState) => state.calendar
 
+export const selectLocation = createSelector(selectCalendar, (state) => state.location)
+
 export const selectTargetDay = createSelector(selectCalendar, (state) => state.targetDay)
 export const selectToday = createSelector(selectCalendar, (state) => state.today)
-
 export const selectTargetMonthValue = createSelector(selectTargetDay, (monthDate) =>
     new Date(monthDate).getUTCMonth()
 )
+
 export const selectTargetMonthItems = createSelector(
     selectCalendar,
     ({ targetDay: monthDate, orderedDayEntries }) => {

@@ -2,9 +2,10 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { sortedIndexBy } from 'lodash'
 
 import { findSorted } from './utils'
-import { DayEntry, TaskEntry, Timestamp } from './types'
+import { Coordinates, DayEntry, TaskEntry, Timestamp } from './types'
 
 export interface CalendarState {
+    location: Coordinates
     today: Timestamp
     targetDay: Timestamp
     selectedDay: null | Timestamp
@@ -12,8 +13,9 @@ export interface CalendarState {
 }
 
 export const initialState: CalendarState = {
-    today: '2024-04-02',
-    targetDay: '2024-04-02',
+    location: { latitude: 59.1386, longitude: 9.6555 },
+    today: '2024-04-05',
+    targetDay: '2024-04-05',
     selectedDay: null,
     orderedDayEntries: [],
 }
@@ -22,6 +24,10 @@ export const calendarSlice = createSlice({
     name: 'calendar',
     initialState,
     reducers: {
+        initializeToday(state, { payload: date }: PayloadAction<Timestamp>) {
+            state.today = date
+            state.targetDay = date
+        },
         setSelectedDay(state, { payload: date }: PayloadAction<Timestamp | null>) {
             state.selectedDay = date
         },
@@ -97,6 +103,7 @@ export const calendarSlice = createSlice({
 export default calendarSlice.reducer
 
 export const {
+    initializeToday: initializeTodayAction,
     setSelectedDay: setSelectedDayAction,
     goToNextMonth: goToNextMonthAction,
     goToPreviousMonth: goToPreviousMonthAction,

@@ -7,6 +7,7 @@ import { withLayout } from './WithLayout'
 import { MockedStore } from './MockedStore'
 import { mapSbArgsToState } from './utils'
 import { CalendarPropsAndCustomArgs } from './types'
+import { LOCATION_OPTIONS } from '../../../../../store/slices/calendar/types'
 
 const meta: Meta<CalendarPropsAndCustomArgs> = {
     title: 'storybook-redux/Calendar',
@@ -28,6 +29,7 @@ const meta: Meta<CalendarPropsAndCustomArgs> = {
         },
     ],
     argTypes: {
+        locationId: { control: 'select', options: LOCATION_OPTIONS },
         today: {
             control: 'date',
         },
@@ -46,6 +48,7 @@ type Story = StoryObj<typeof meta>
 export const Primary: Story = {
     decorators: [],
     args: {
+        locationId: LOCATION_OPTIONS[0],
         today: new Date().toISOString(),
         targetDay: new Date().toISOString(),
         showSelectedDay: false,

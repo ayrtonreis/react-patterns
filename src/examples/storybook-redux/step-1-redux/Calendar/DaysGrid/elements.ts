@@ -18,6 +18,7 @@ export const WeekWrapper = styled(Grid)`
 `
 
 export const DayCellWrapper = styled(Grid)`
+    position: relative;
     ${variables};
 
     border-right: var(--border-style-blue);

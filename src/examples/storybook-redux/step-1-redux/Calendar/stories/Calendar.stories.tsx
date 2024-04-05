@@ -8,6 +8,7 @@ import { MockedStore } from './MockedStore'
 import { mapSbArgsToState } from './utils'
 import { CalendarPropsAndCustomArgs } from './types'
 import { LOCATION_OPTIONS } from '../../../../../store/slices/calendar/types'
+import { buildMockedTaskEntries } from './mock'
 
 const meta: Meta<CalendarPropsAndCustomArgs> = {
     title: 'storybook-redux/Calendar',
@@ -45,7 +46,7 @@ const meta: Meta<CalendarPropsAndCustomArgs> = {
 }
 type Story = StoryObj<typeof meta>
 
-export const Primary: Story = {
+export const Basic: Story = {
     decorators: [],
     args: {
         locationId: LOCATION_OPTIONS[0],
@@ -54,6 +55,18 @@ export const Primary: Story = {
         showSelectedDay: false,
         selectedDay: new Date().toISOString(),
         orderedDayEntries: [],
+    },
+}
+
+export const Advanced: Story = {
+    decorators: [],
+    args: {
+        locationId: LOCATION_OPTIONS[0],
+        today: new Date().toISOString(),
+        targetDay: new Date().toISOString(),
+        showSelectedDay: false,
+        selectedDay: new Date().toISOString(),
+        orderedDayEntries: buildMockedTaskEntries(new Date()),
     },
 }
 

@@ -58,7 +58,7 @@ export function DaysGrid() {
                                 </StyledIconButton>
                             </Grid>
 
-                            <Grid container justifyContent="end" padding="4px 0">
+                            <Grid container justifyContent="end" position="absolute" bottom="4px">
                                 {TASK_CATEGORY_VALUES.map(
                                     (category) =>
                                         taskCounterByCategory.get(category) && (

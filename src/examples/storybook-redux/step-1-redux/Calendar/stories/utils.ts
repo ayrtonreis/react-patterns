@@ -13,8 +13,9 @@ export function mapSbArgsToState(args: CalendarPropsAndCustomArgs): CalendarStat
         ...args,
         today: serializeDate(args.today),
         targetDay: serializeDate(args.targetDay),
-        selectedDay:
-            args.showSelectedDay && args.selectedDay ? serializeDate(args.selectedDay) : null,
+        selectedDay: args.showSelectedDay
+            ? serializeDate(args.selectedDay ? args.selectedDay : new Date().toISOString())
+            : null,
         orderedDayEntries: args.orderedDayEntries.map(({ day, ...item }) => ({
             ...item,
             day: serializeDate(day),
